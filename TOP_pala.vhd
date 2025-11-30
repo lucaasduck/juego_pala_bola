@@ -59,7 +59,7 @@ component contador is
            reset : in STD_LOGIC;
            enable : in STD_LOGIC;
            resets : in STD_LOGIC;
-           Q : out STD_LOGIC_VECTOR (Nbit-1 downto 0));--Q=Tamaño de bits asignados en la implementación.
+           Q : out STD_LOGIC_VECTOR (Nbit-1 downto 0));--Q=TamaÃ±o de bits asignados en la implementaciÃ³n.
 end component;
 
 
@@ -76,17 +76,33 @@ component comparador is
            O2 : out STD_LOGIC;
            O3 : out STD_LOGIC);
 end component;
+
+
 component dibuja_pala is
-Port ( eje_x : in STD_LOGIC_VECTOR (9 downto 0);-- Coordenada horizontal del píxel. Sólo dentro pantalla los píxeles con coordenadas comprendidas entre 0 y 639.
-           eje_y : in STD_LOGIC_VECTOR (9 downto 0);-- Coordenada vertical del píxel. Sólo estarán dentro de la pantalla los píxeles con coordenadas comprendidas entre 0 y 479.
-           RED : out STD_LOGIC_VECTOR (3 downto 0);-- Cuatro bits de salida del color rojo para el píxel
-           GRN : out STD_LOGIC_VECTOR (3 downto 0);-- Cuatro bits de salida del color verde para el píxel
-           BLU : out STD_LOGIC_VECTOR (3 downto 0));-- Cuatro bits de salida del color azul para el píxel
+  generic (
+    vel_pala      : integer := 1;
+    anchura_pala  : integer := 64;
+    altura_pala   : integer := 16;
+    lim_derecho   : integer := 512;
+    pos_y_const   : integer := 460
+  );
+  port (
+    eje_x   : in  STD_LOGIC_VECTOR (9 downto 0);
+    eje_y   : in  STD_LOGIC_VECTOR (9 downto 0);
+    refresh : in  STD_LOGIC;
+    b_izq   : in  STD_LOGIC;
+    b_der   : in  STD_LOGIC;
+    clk     : in  STD_LOGIC;
+    reset   : in  STD_LOGIC;
+    RED     : out STD_LOGIC_VECTOR (3 downto 0);
+    GRN     : out STD_LOGIC_VECTOR (3 downto 0);
+    BLU     : out STD_LOGIC_VECTOR (3 downto 0)
+  );
 end component;
 
 component Gen_color is 
- Port ( blank_h : in STD_LOGIC;-- Indicador de que está fuera de pantalla procedente comparador horizontal
-           blank_v : in STD_LOGIC;-- Indicador de que está fuera de pantalla procedente comparador vertical
+ Port ( blank_h : in STD_LOGIC;-- Indicador de que estÃ¡ fuera de pantalla procedente comparador horizontal
+           blank_v : in STD_LOGIC;-- Indicador de que estÃ¡ fuera de pantalla procedente comparador vertical
            RED_in : in STD_LOGIC_VECTOR (3 downto 0);--Entrada de color procedentes del bloque DIBUJA
            GRN_in : in STD_LOGIC_VECTOR (3 downto 0);--Entrada de color procedentes del bloque DIBUJA
            BLU_in : in STD_LOGIC_VECTOR (3 downto 0);--Entrada de color procedentes del bloque DIBUJA
@@ -96,7 +112,7 @@ component Gen_color is
            
 end component;
 
-------------- señales de conexionenre los distintos bloques ----------------------------------------------
+------------- seÃ±ales de conexionenre los distintos bloques ----------------------------------------------
 --conectamos los distintos bloques
 signal pixel_enable : std_logic; 
 signal contV_enable: std_logic; 
@@ -169,16 +185,19 @@ PORT MAP(
 
 
     
-dibujar: dibuja_pala
-PORT MAP(
-    eje_X=> eje_X,
-    eje_Y=> eje_Y,
-    refresh => compV_o3,
-    b_izq => boton_izquierda,
-    b_der => boton_derecha,
-    RED =>color_red,
-    GRN => color_green,
-    BLU => color_blue );
+ dibujar: dibuja_pala
+    port map (
+      eje_X   => eje_X,
+      eje_Y   => eje_Y,
+      refresh => compV_o3,
+      b_izq   => boton_izquierda,
+      b_der   => boton_derecha,
+      clk     => clk,
+      reset   => reset,
+      RED     => color_red,
+      GRN     => color_green,
+      BLU     => color_blue
+    );
 
 
     
