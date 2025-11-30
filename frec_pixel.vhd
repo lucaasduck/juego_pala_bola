@@ -31,7 +31,7 @@ end frec_pixel;
 
 architecture Behavioral of frec_pixel is
 
-signal cuenta,p_cuenta: unsigned(2 downto 0);
+signal cuenta,p_cuenta: unsigned(1 downto 0);
 signal sat: std_logic;
 
 
@@ -53,7 +53,7 @@ clk_pixel<=sat;
     comb: process(cuenta)
     begin
 
-    if (cuenta = 4) then
+    if (cuenta = "11") then ----- si la cuenta llega a 3 (se ha dividido por 4)
         p_cuenta<= (others=>'0');-- proximo valor de cuenta a cero.
         sat<='1';
         
