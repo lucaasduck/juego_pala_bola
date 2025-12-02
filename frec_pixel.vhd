@@ -31,7 +31,7 @@ end frec_pixel;
 
 architecture Behavioral of frec_pixel is
 
-signal cuenta,p_cuenta: unsigned(2 downto 0);
+signal cuenta,p_cuenta: unsigned(1 downto 0);
 signal sat: std_logic;
 
 
