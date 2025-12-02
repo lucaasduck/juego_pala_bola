@@ -32,6 +32,9 @@ use IEEE.STD_LOGIC_1164.ALL;
 --use UNISIM.VComponents.all;
 
 entity dibuja_bola is
+     generic (
+        vel_bola: integer := 3
+    );
     Port ( eje_x : in STD_LOGIC_VECTOR (9 downto 0);
            eje_y : in STD_LOGIC_VECTOR (9 downto 0);
            data_bola : in STD_LOGIC;
