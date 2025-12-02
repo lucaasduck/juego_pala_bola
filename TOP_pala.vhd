@@ -36,9 +36,7 @@ entity TOP_pala is
            reset : in STD_LOGIC;
            boton_derecha :in STD_LOGIC;
            boton_izquierda : in STD_LOGIC; 
-           RED : out STD_LOGIC_VECTOR (3 downto 0);
-           GRN : out STD_LOGIC_VECTOR (3 downto 0);
-           BLU : out STD_LOGIC_VECTOR (3 downto 0);
+           RGB_out : out STD_LOGIC_VECTOR (11 downto 0); -- salida de colores RGB de 12 bits
            VS : out STD_LOGIC;
            HS : out STD_LOGIC);
 end TOP_pala;
@@ -59,7 +57,7 @@ component contador is
            reset : in STD_LOGIC;
            enable : in STD_LOGIC;
            resets : in STD_LOGIC;
-           Q : out STD_LOGIC_VECTOR (Nbit-1 downto 0));--Q=Tamaño de bits asignados en la implementación.
+           Q : out STD_LOGIC_VECTOR (Nbit-1 downto 0));--Q=Tama o de bits asignados en la implementaci n.
 end component;
 
 
@@ -85,7 +83,7 @@ component dibuja_pala is
     altura_pala   : integer := 16;
     lim_derecho   : integer := 512;
     pos_y_const   : integer := 400; ------ posicion constante de la pala 
-     wall_width    : integer := 15;        -- ancho del muro en píxeles
+     wall_width    : integer := 15;        -- ancho del muro en p xeles
     z_juego_R     : STD_LOGIC_VECTOR (3 downto 0):= "0000";      -- fondo dentro de juego
     z_juego_G     : STD_LOGIC_VECTOR (3 downto 0) := "0000";
     z_juego_B     : STD_LOGIC_VECTOR (3 downto 0) := "0010";
@@ -114,18 +112,15 @@ component dibuja_pala is
 end component;
 
 component Gen_color is 
- Port ( blank_h : in STD_LOGIC;-- Indicador de que está fuera de pantalla procedente comparador horizontal
-           blank_v : in STD_LOGIC;-- Indicador de que está fuera de pantalla procedente comparador vertical
+ Port ( blank_h : in STD_LOGIC;-- Indicador de que est  fuera de pantalla procedente comparador horizontal
+           blank_v : in STD_LOGIC;-- Indicador de que est  fuera de pantalla procedente comparador vertical
            RED_in : in STD_LOGIC_VECTOR (3 downto 0);--Entrada de color procedentes del bloque DIBUJA
            GRN_in : in STD_LOGIC_VECTOR (3 downto 0);--Entrada de color procedentes del bloque DIBUJA
            BLU_in : in STD_LOGIC_VECTOR (3 downto 0);--Entrada de color procedentes del bloque DIBUJA
-           RED : out STD_LOGIC_VECTOR (3 downto 0);--Salida de color del controlador VGA hacia la pantalla
-           GRN : out STD_LOGIC_VECTOR (3 downto 0);--Salida de color del controlador VGA hacia la pantalla
-           BLU : out STD_LOGIC_VECTOR (3 downto 0));--Salida de color del controlador VGA hacia la pantalla
-           
+           RGB_out : out STD_LOGIC_VECTOR (11 downto 0)); -- salida de colores RGB de 12 bits           
 end component;
 
-------------- señales de conexionenre los distintos bloques ----------------------------------------------
+------------- se ales de conexionenre los distintos bloques ----------------------------------------------
 --conectamos los distintos bloques
 signal pixel_enable : std_logic; 
 signal contV_enable: std_logic; 
@@ -221,8 +216,6 @@ PORT MAP(
     RED_in => color_red,
     GRN_in => color_green,
     BLU_in=> color_blue,
-    RED => RED,
-    GRN => GRN,
-    BLU => BLU);
+    RGB_out => RGB_out );
  
 end Behavioral;
