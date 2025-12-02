@@ -14,8 +14,8 @@
 -- 
 -- Revision:
 -- Revision 0.01 - File Created
--- Additional Comments: Bloque combinacional que asegura que el caÒÛn de electrones estÈ apagado
---                      cuando apunta fuera de la pantalla o est· volviendo al comienzo de otra lÌnea.
+-- Additional Comments: Bloque combinacional que asegura que el ca√±√≥n de electrones est√© apagado
+--                      cuando apunta fuera de la pantalla o est√° volviendo al comienzo de otra l√≠nea.
 -- 
 ----------------------------------------------------------------------------------
 
@@ -33,14 +33,12 @@ use IEEE.NUMERIC_STD.ALL;
 --use UNISIM.VComponents.all;
 
 entity Gen_color is
-    Port ( blank_h : in STD_LOGIC;-- Indicador de que est· fuera de pantalla procedente comparador horizontal
-           blank_v : in STD_LOGIC;-- Indicador de que est· fuera de pantalla procedente comparador vertical
+    Port ( blank_h : in STD_LOGIC;-- Indicador de que est√° fuera de pantalla procedente comparador horizontal
+           blank_v : in STD_LOGIC;-- Indicador de que est√° fuera de pantalla procedente comparador vertical
            RED_in : in STD_LOGIC_VECTOR (3 downto 0);--Entrada de color procedentes del bloque DIBUJA
            GRN_in : in STD_LOGIC_VECTOR (3 downto 0);--Entrada de color procedentes del bloque DIBUJA
            BLU_in : in STD_LOGIC_VECTOR (3 downto 0);--Entrada de color procedentes del bloque DIBUJA
-           RED : out STD_LOGIC_VECTOR (3 downto 0);--Salida de color del controlador VGA hacia la pantalla
-           GRN : out STD_LOGIC_VECTOR (3 downto 0);--Salida de color del controlador VGA hacia la pantalla
-           BLU : out STD_LOGIC_VECTOR (3 downto 0));--Salida de color del controlador VGA hacia la pantalla
+           RGB_out : out STD_LOGIC_VECTOR (11 downto 0)); -- salida de colores RGB de 12 bits 
 end Gen_color;
 
 architecture Behavioral of Gen_color is
@@ -50,12 +48,9 @@ gen_color:process(Blank_H, Blank_V, RED_in, GRN_in,
 BLU_in)
 begin
     if (Blank_H='1' or Blank_V='1') then
-        RED<=(others => '0'); GRN<=(others => '0');
-        BLU<=(others => '0');
+        RGB_out<=(others => '0');
     else
-         RED<=RED_in;
-         GRN<=GRN_in; 
-         BLU<=BLU_in;
+    RGB_out<= RED_in & GRN_in & BLU_in;
     end if;
 end process;
 
