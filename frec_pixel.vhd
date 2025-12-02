@@ -53,7 +53,7 @@ clk_pixel<=sat;
     comb: process(cuenta)
     begin
 
-    if (cuenta = 4) then
+    if (cuenta = 3) then
         p_cuenta<= (others=>'0');-- proximo valor de cuenta a cero.
         sat<='1';
         
